@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Omar Kwayder — Full-Stack Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg:#07090C; --bg2:#0D1117; --bg3:#131920; --bg4:#1A2330;
+    --text:#DDD6CB; --muted:#6B7A8A; --dim:#3A4855;
+    --accent:#00BFFF; --border:rgba(0,191,255,0.10); --border2:rgba(0,191,255,0.28);
+  }
+  html { scroll-behavior: smooth; }
+  body { background:var(--bg); color:var(--text); font-family:'Space Grotesk',sans-serif; font-size:16px; line-height:1.65; overflow-x:hidden; }
+  nav {
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:1.1rem 4rem;
+    background:rgba(7,9,12,0.88); backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--border);
+  }
+  .nav-logo { font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--accent); letter-spacing:.1em; text-decoration:none; }
+  .nav-links { display:flex; gap:2.5rem; list-style:none; }
+  .nav-links a { font-size:12px; color:var(--muted); text-decoration:none; letter-spacing:.08em; text-transform:uppercase; transition:color .2s; }
+  .nav-links a:hover { color:var(--accent); }
+  .hero { min-height:100vh; display:flex; flex-direction:column; justify-content:center; padding:9rem 4rem 5rem; position:relative; overflow:hidden; }
+  .hero::after { content:''; position:absolute; top:-250px; right:-150px; width:650px; height:650px; background:radial-gradient(circle,rgba(0,191,255,0.055) 0%,transparent 68%); pointer-events:none; }
+  .hero-eyebrow { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--accent); letter-spacing:.22em; text-transform:uppercase; display:flex; align-items:center; gap:.75rem; margin-bottom:1.6rem; }
+  .hero-eyebrow::before { content:''; display:block; width:30px; height:1px; background:var(--accent); }
+  .hero h1 { font-size:clamp(3.2rem,7.5vw,5.8rem); font-weight:700; line-height:1.04; letter-spacing:-0.03em; margin-bottom:1.4rem; max-width:820px; }
+  .hero h1 .hi { color:var(--muted); font-weight:300; font-size:0.55em; display:block; margin-bottom:.4rem; letter-spacing:0; }
+  .hero h1 .accent { color:var(--accent); }
+  .hero-sub { font-family:'JetBrains Mono',monospace; font-size:15px; color:var(--muted); display:flex; align-items:center; gap:.4rem; margin-bottom:2.8rem; }
+  .cursor { display:inline-block; width:9px; height:17px; background:var(--accent); animation:blink 1s step-end infinite; vertical-align:middle; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+  .cta-row { display:flex; gap:.85rem; flex-wrap:wrap; }
+  .btn-primary { display:inline-flex; align-items:center; gap:.4rem; padding:.8rem 1.9rem; background:var(--accent); color:var(--bg); font-family:'Space Grotesk',sans-serif; font-size:13px; font-weight:700; letter-spacing:.05em; text-decoration:none; border:none; cursor:pointer; transition:opacity .2s,transform .15s; }
+  .btn-primary:hover { opacity:.85; transform:translateY(-1px); }
+  .btn-ghost { display:inline-flex; align-items:center; gap:.4rem; padding:.8rem 1.9rem; background:transparent; color:var(--text); font-family:'Space Grotesk',sans-serif; font-size:13px; font-weight:500; letter-spacing:.05em; text-decoration:none; border:1px solid var(--border2); cursor:pointer; transition:border-color .2s,color .2s; }
+  .btn-ghost:hover { border-color:var(--accent); color:var(--accent); }
+  .hero-stats { display:flex; gap:3rem; margin-top:4.5rem; padding-top:2.5rem; border-top:1px solid var(--border); flex-wrap:wrap; }
+  .stat-num { font-size:2rem; font-weight:700; color:var(--accent); display:block; line-height:1; margin-bottom:.25rem; }
+  .stat-label { font-size:11px; color:var(--muted); letter-spacing:.1em; text-transform:uppercase; }
+  section { padding:7rem 4rem; }
+  .section-eyebrow { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--accent); letter-spacing:.24em; text-transform:uppercase; display:flex; align-items:center; gap:.7rem; margin-bottom:.9rem; }
+  .section-eyebrow::before { content:''; display:block; width:22px; height:1px; background:var(--accent); }
+  section > h2 { font-size:clamp(1.9rem,3.5vw,2.8rem); font-weight:700; letter-spacing:-0.02em; margin-bottom:3rem; max-width:580px; }
+  #skills { background:var(--bg2); }
+  .skills-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(270px,1fr)); gap:1.25rem; }
+  .skill-card { background:var(--bg3); border:1px solid var(--border); padding:1.6rem; transition:border-color .2s,transform .2s; }
+  .skill-card:hover { border-color:var(--border2); transform:translateY(-2px); }
+  .skill-cat { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--accent); letter-spacing:.18em; text-transform:uppercase; margin-bottom:.7rem; }
+  .skill-title { font-size:15px; font-weight:600; margin-bottom:.15rem; }
+  .skill-icon { font-size:26px; margin-bottom:.6rem; display:block; }
+  .tags { display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.85rem; }
+  .tag { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted); background:var(--bg4); border:1px solid var(--border); padding:.25rem .65rem; }
+  #projects { background:var(--bg); }
+  .projects-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:1.4rem; }
+  .project-card { background:var(--bg2); border:1px solid var(--border); padding:1.9rem; position:relative; overflow:hidden; transition:border-color .2s,transform .2s; display:flex; flex-direction:column; }
+  .project-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:var(--accent); transform:scaleX(0); transform-origin:left; transition:transform .3s; }
+  .project-card:hover::before { transform:scaleX(1); }
+  .project-card:hover { border-color:var(--border2); transform:translateY(-3px); }
+  .project-card.featured { border-color:var(--border2); }
+  .project-badge { display:inline-block; margin-bottom:1rem; font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--accent); background:rgba(0,191,255,0.1); border:1px solid rgba(0,191,255,0.22); padding:.25rem .7rem; letter-spacing:.1em; text-transform:uppercase; }
+  .project-num { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--dim); letter-spacing:.1em; margin-bottom:.6rem; }
+  .project-period { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--dim); margin-bottom:.7rem; }
+  .project-title { font-size:1.15rem; font-weight:700; margin-bottom:.65rem; letter-spacing:-.01em; }
+  .project-desc { font-size:13.5px; color:var(--muted); line-height:1.72; margin-bottom:1.4rem; flex:1; }
+  .proj-tech { display:flex; flex-wrap:wrap; gap:.35rem; }
+  .tech-pill { font-family:'JetBrains Mono',monospace; font-size:10.5px; color:var(--accent); background:rgba(0,191,255,0.07); border:1px solid rgba(0,191,255,0.18); padding:.22rem .6rem; letter-spacing:.04em; }
+  #experience { background:var(--bg2); }
+  .timeline { position:relative; padding-left:1.8rem; }
+  .timeline::before { content:''; position:absolute; left:0; top:10px; bottom:0; width:1px; background:var(--border); }
+  .tl-item { position:relative; padding-bottom:2.8rem; }
+  .tl-item:last-child { padding-bottom:0; }
+  .tl-dot { position:absolute; left:-1.8rem; top:10px; width:7px; height:7px; background:var(--accent); border:2px solid var(--bg2); transform:translateX(-3px); }
+  .tl-date { font-family:'JetBrains Mono',monospace; font-size:10.5px; color:var(--accent); letter-spacing:.12em; margin-bottom:.4rem; }
+  .tl-role { font-size:1rem; font-weight:700; margin-bottom:.12rem; }
+  .tl-company { font-size:12.5px; color:var(--muted); margin-bottom:.9rem; }
+  .tl-bullets { list-style:none; display:flex; flex-direction:column; gap:.42rem; }
+  .tl-bullets li { font-size:13.5px; color:var(--muted); padding-left:1rem; position:relative; line-height:1.65; }
+  .tl-bullets li::before { content:'›'; position:absolute; left:0; color:var(--accent); font-weight:bold; }
+  #certs { background:var(--bg); }
+  .certs-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:.9rem; }
+  .cert-card { background:var(--bg2); border:1px solid var(--border); padding:1.1rem 1.3rem; display:flex; align-items:flex-start; gap:.9rem; transition:border-color .2s; }
+  .cert-card:hover { border-color:var(--border2); }
+  .cert-icon { flex-shrink:0; width:34px; height:34px; background:rgba(0,191,255,0.09); border:1px solid rgba(0,191,255,0.2); display:flex; align-items:center; justify-content:center; font-size:15px; }
+  .cert-name { font-size:13px; font-weight:600; line-height:1.4; margin-bottom:.15rem; }
+  .cert-issuer { font-family:'JetBrains Mono',monospace; font-size:10.5px; color:var(--muted); letter-spacing:.07em; }
+  #contact { background:var(--bg2); text-align:center; }
+  #contact h2 { margin:0 auto 1rem; text-align:center; max-width:100%; }
+  #contact p { color:var(--muted); max-width:460px; margin:0 auto 2.4rem; font-size:14px; }
+  .contact-links { display:flex; justify-content:center; gap:2rem; flex-wrap:wrap; margin-top:2.8rem; }
+  .contact-link { font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--muted); text-decoration:none; letter-spacing:.09em; display:flex; align-items:center; gap:.4rem; transition:color .2s; }
+  .contact-link:hover { color:var(--accent); }
+  footer { background:var(--bg); text-align:center; padding:1.8rem; font-family:'JetBrains Mono',monospace; font-size:10.5px; color:var(--dim); letter-spacing:.09em; border-top:1px solid var(--border); }
+  .fade-up { opacity:0; transform:translateY(22px); transition:opacity .6s ease,transform .6s ease; }
+  .fade-up.visible { opacity:1; transform:translateY(0); }
+  @media (max-width:768px) { nav { padding:1rem 1.5rem; } .nav-links { gap:1.4rem; } .nav-links a { font-size:11px; } .hero, section { padding-left:1.5rem; padding-right:1.5rem; } .hero-stats { gap:1.8rem; } }
+  @media (prefers-reduced-motion:reduce) { .fade-up { transition:none; } .cursor { animation:none; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">OK.dev</a>
+  <ul class="nav-links">
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section class="hero" id="home">
+  <div class="hero-eyebrow">Open to full-time roles</div>
+  <h1><span class="hi">Hi, I'm</span>Omar <span class="accent">Kwayder</span></h1>
+  <div class="hero-sub">Full-Stack Developer &nbsp;·&nbsp; Fintech &nbsp;·&nbsp; IoT &nbsp;·&nbsp; Cybersecurity<span class="cursor"></span></div>
+  <div class="cta-row">
+    <a href="#projects" class="btn-primary">View My Work</a>
+    <a href="mailto:info.omarkwayder@gmail.com" class="btn-ghost">Get in Touch</a>
+  </div>
+  <div class="hero-stats">
+    <div><span class="stat-num">4+</span><span class="stat-label">Years Experience</span></div>
+    <div><span class="stat-num">4</span><span class="stat-label">Major Projects</span></div>
+    <div><span class="stat-num">5</span><span class="stat-label">Certifications</span></div>
+    <div><span class="stat-num">BAU</span><span class="stat-label">CS Student</span></div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="section-eyebrow">What I work with</div>
+  <h2>Skills &amp; Technologies</h2>
+  <div class="skills-grid">
+    <div class="skill-card fade-up">
+      <span class="skill-icon">⚛️</span>
+      <div class="skill-cat">Frontend</div>
+      <div class="skill-title">UI Development</div>
+      <div class="tags"><span class="tag">React.js</span><span class="tag">React Native</span><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span></div>
+    </div>
+    <div class="skill-card fade-up">
+      <span class="skill-icon">⚙️</span>
+      <div class="skill-cat">Backend</div>
+      <div class="skill-title">Server &amp; API</div>
+      <div class="tags"><span class="tag">ASP.NET (C#)</span><span class="tag">Django</span><span class="tag">PHP</span><span class="tag">Python</span></div>
+    </div>
+    <div class="skill-card fade-up">
+      <span class="skill-icon">🗄️</span>
+      <div class="skill-cat">Databases</div>
+      <div class="skill-title">Data Management</div>
+      <div class="tags"><span class="tag">MySQL</span><span class="tag">SQL Server</span><span class="tag">PostgreSQL</span><span class="tag">DynamoDB</span></div>
+    </div>
+    <div class="skill-card fade-up">
+      <span class="skill-icon">💻</span>
+      <div class="skill-cat">Programming Languages</div>
+      <div class="skill-title">Core Languages</div>
+      <div class="tags"><span class="tag">Java (Advanced)</span><span class="tag">C++ (Advanced)</span><span class="tag">Python (Advanced)</span></div>
+    </div>
+    <div class="skill-card fade-up">
+      <span class="skill-icon">☁️</span>
+      <div class="skill-cat">Cloud &amp; DevOps</div>
+      <div class="skill-title">Infrastructure</div>
+      <div class="tags"><span class="tag">AWS</span><span class="tag">Azure</span><span class="tag">Git</span><span class="tag">CI/CD</span></div>
+    </div>
+    <div class="skill-card fade-up">
+      <span class="skill-icon">🔐</span>
+      <div class="skill-cat">Networking &amp; Security</div>
+      <div class="skill-title">Cybersecurity</div>
+      <div class="tags"><span class="tag">CCNA</span><span class="tag">Ethical Hacking</span><span class="tag">Network Protocols</span><span class="tag">IT Security</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="section-eyebrow">What I've built</div>
+  <h2>Featured Projects</h2>
+  <div class="projects-grid">
+
+    <div class="project-card featured fade-up">
+      <div class="project-badge">&#11088; Latest Project</div>
+      <div class="project-period">Dec 2025 – Jun 2026</div>
+      <div class="project-title">AURA — Smart Home System</div>
+      <div class="project-desc">A full-stack smart home monitoring and control system. Built a React Native mobile UI, a Django backend handling communication between IoT devices and the frontend, and ESP32 firmware in C++ for hardware control. Device messaging runs over MQTT, with AWS Cloud and AWS Lambda handling serverless backend logic and event-driven automation.</div>
+      <div class="proj-tech">
+        <span class="tech-pill">React Native</span><span class="tech-pill">Django</span><span class="tech-pill">Python</span><span class="tech-pill">ESP32</span><span class="tech-pill">C++</span><span class="tech-pill">MQTT</span><span class="tech-pill">AWS Cloud</span><span class="tech-pill">AWS Lambda</span><span class="tech-pill">IoT</span>
+      </div>
+    </div>
+
+    <div class="project-card fade-up">
+      <div class="project-num">IDS Fintech Internship</div>
+      <div class="project-period">Aug – Nov 2025</div>
+      <div class="project-title">E-Library Web Application</div>
+      <div class="project-desc">A responsive full-stack e-library platform built during my internship. Designed the UI in React.js, engineered the backend with ASP.NET (C#), and integrated a SQL Server database through REST APIs.</div>
+      <div class="proj-tech">
+        <span class="tech-pill">React.js</span><span class="tech-pill">ASP.NET (C#)</span><span class="tech-pill">SQL Server</span><span class="tech-pill">REST APIs</span>
+      </div>
+    </div>
+
+    <div class="project-card fade-up">
+      <div class="project-num">Academic · BAU</div>
+      <div class="project-period">Feb – Jun 2024</div>
+      <div class="project-title">Coffee Shop Platform</div>
+      <div class="project-desc">A complete full-stack web application with a responsive frontend, user authentication (login and registration), and a PHP/SQL backend for robust data management.</div>
+      <div class="proj-tech">
+        <span class="tech-pill">HTML</span><span class="tech-pill">CSS</span><span class="tech-pill">JavaScript</span><span class="tech-pill">PHP</span><span class="tech-pill">MySQL</span>
+      </div>
+    </div>
+
+    <div class="project-card fade-up">
+      <div class="project-num">Academic · BAU</div>
+      <div class="project-period">Sep – Dec 2023</div>
+      <div class="project-title">WYO — Software Engineering</div>
+      <div class="project-desc">Led the full software engineering lifecycle: feasibility studies, financial analysis, UML and sequence diagram design, and a working prototype showcasing system features.</div>
+      <div class="proj-tech">
+        <span class="tech-pill">UML</span><span class="tech-pill">System Design</span><span class="tech-pill">Prototyping</span><span class="tech-pill">Requirements Analysis</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="experience">
+  <div class="section-eyebrow">Where I've worked</div>
+  <h2>Experience</h2>
+  <div class="timeline">
+    <div class="tl-item fade-up">
+      <div class="tl-dot"></div>
+      <div class="tl-date">Aug 2025 — Nov 2025 · Remote, Beirut</div>
+      <div class="tl-role">Full-Stack Developer</div>
+      <div class="tl-company">IDS Fintech</div>
+      <ul class="tl-bullets">
+        <li>Developed and maintained fintech web apps using React.js (frontend) and ASP.NET C# (backend).</li>
+        <li>Designed and optimized MySQL/SQL Server databases with queries, stored procedures, and schema management.</li>
+        <li>Built an E-Library app with React.js UI, ASP.NET backend, and SQL Server integration via REST APIs.</li>
+        <li>Implemented debugging, testing, and performance improvements to enhance user experience.</li>
+        <li>Collaborated cross-functionally to deliver secure, scalable fintech solutions.</li>
+      </ul>
+    </div>
+    <div class="tl-item fade-up">
+      <div class="tl-dot"></div>
+      <div class="tl-date">Aug 2024 — Jul 2025 · Beirut, Lebanon</div>
+      <div class="tl-role">IT Support Specialist</div>
+      <div class="tl-company">Maintenance and Management (M.A.M)</div>
+      <ul class="tl-bullets">
+        <li>Delivered Tier-1 and Tier-2 support for 100+ users, resolving hardware and software issues.</li>
+        <li>Installed, configured, and maintained systems, applications, and network devices.</li>
+        <li>Monitored and troubleshot network connectivity to optimize system performance.</li>
+        <li>Assisted in implementing IT security measures to safeguard organizational data.</li>
+      </ul>
+    </div>
+    <div class="tl-item fade-up">
+      <div class="tl-dot"></div>
+      <div class="tl-date">Sep 2021 — May 2024 · Beirut, Lebanon</div>
+      <div class="tl-role">Audio Engineer</div>
+      <div class="tl-company">Nidaa' FM</div>
+      <ul class="tl-bullets">
+        <li>Engineered live audio mixing for broadcasts and online streaming using Mixer O2.</li>
+        <li>Synchronized video and audio for seamless live productions.</li>
+        <li>Maintained consistent sound levels and clarity, boosting audience engagement.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="certs">
+  <div class="section-eyebrow">Credentials</div>
+  <h2>Certifications &amp; Education</h2>
+  <div class="certs-grid">
+    <div class="cert-card fade-up"><div class="cert-icon">🎓</div><div><div class="cert-name">B.Sc. Computer Science</div><div class="cert-issuer">Beirut Arab University · Feb 2023 – Jun 2026</div></div></div>
+    <div class="cert-card fade-up"><div class="cert-icon">🛡️</div><div><div class="cert-name">Introduction to Cybersecurity</div><div class="cert-issuer">CISCO</div></div></div>
+    <div class="cert-card fade-up"><div class="cert-icon">🌐</div><div><div class="cert-name">Introduction to Networks — CCNA</div><div class="cert-issuer">CISCO</div></div></div>
+    <div class="cert-card fade-up"><div class="cert-icon">📡</div><div><div class="cert-name">Computer Networks 101 &amp; 102</div><div class="cert-issuer">Satr.codes</div></div></div>
+    <div class="cert-card fade-up"><div class="cert-icon">🔐</div><div><div class="cert-name">Cybersecurity Major</div><div class="cert-issuer">Edraak.org</div></div></div>
+    <div class="cert-card fade-up"><div class="cert-icon">⚔️</div><div><div class="cert-name">Ethical Hacking</div><div class="cert-issuer">Edraak.org</div></div></div>
+  </div>
+</section>
+
+<section id="contact" style="background:var(--bg2);">
+  <div class="section-eyebrow" style="justify-content:center;">Let's connect</div>
+  <h2>Open to Opportunities</h2>
+  <p>Seeking roles in full-stack development, fintech, IoT, or cybersecurity. Based in Beirut, Lebanon — available remotely.</p>
+  <a href="mailto:info.omarkwayder@gmail.com" class="btn-primary" style="display:inline-flex;margin:0 auto;">Send an Email</a>
+  <div class="contact-links">
+    <a href="mailto:info.omarkwayder@gmail.com" class="contact-link">✉ info.omarkwayder@gmail.com</a>
+    <span class="contact-link">📍 Beirut, Lebanon</span>
+    <span class="contact-link">📞 +961 81 916 304</span>
+    <a href="https://www.linkedin.com/in/omarkwayder040b10319" target="_blank" rel="noopener" class="contact-link">in LinkedIn</a>
+  </div>
+</section>
+
+<footer><p>© 2026 Omar Kwayder — Built with precision, deployed with purpose.</p></footer>
+
+<script>
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) {
+        const d = parseInt(e.target.dataset.delay || 0);
+        setTimeout(() => e.target.classList.add('visible'), d * 90);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach((el, i) => { el.dataset.delay = i % 5; obs.observe(el); });
+</script>
+</body>
+</html>
